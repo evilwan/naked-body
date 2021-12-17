@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Eddy Vanlerberghe.  All rights reserved.
+ * Copyright (c) 2021 Eddy Vanlerberghe.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -30,6 +30,7 @@
 package evilwan.nakedbody;
 
 import javax.swing.*;
+import java.io.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -39,6 +40,13 @@ import java.awt.event.ActionListener;
  * to save some naked bodies from the proxy history.
  */
 public class BodySaveDialog extends JDialog implements ActionListener {
+    /**
+     * Start directory for file dialog operations.
+     * <p>
+     * This variable is adjusted to keep track of the latest selected
+     * directory.
+     */
+    private static File _curdir = new File(System.getProperty("user.home"));
     /**
      * Parent frame for this dialog
      */
@@ -60,9 +68,11 @@ public class BodySaveDialog extends JDialog implements ActionListener {
      */
     private JTextField _directory_txt;
     /**
-     * Actual output directory name
+     * Actual output directory name.
+     * <p>
+     * Note that this is a String object while _curdir is a File object.
      */
-    private String _outdir = "";
+    private String _outdir = _curdir.getAbsolutePath();
     /**
      * Encapsulation of standard output and standard error provided by Burp for its extensions
      */
@@ -94,6 +104,7 @@ public class BodySaveDialog extends JDialog implements ActionListener {
         messagePane.setLayout(new BoxLayout(messagePane, BoxLayout.Y_AXIS));
         JPanel dirpane = new JPanel();
         _directory_txt = new JTextField("", 40);
+        _directory_txt.setText(_outdir);
         dirpane.add(_directory_txt);
         JButton btn_seldir = new JButton("Browse...");
         dirpane.add(btn_seldir);
@@ -105,11 +116,15 @@ public class BodySaveDialog extends JDialog implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 JFileChooser chooser = new JFileChooser();
+                chooser.setCurrentDirectory(_curdir);
                 chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
                 chooser.setAcceptAllFileFilterUsed(false);
                 int returnVal = chooser.showOpenDialog(_dad);
                 if(returnVal == JFileChooser.APPROVE_OPTION) {
-                    _directory_txt.setText(chooser.getCurrentDirectory() + "/" + chooser.getSelectedFile().getName());
+                    _outdir = chooser.getCurrentDirectory().getAbsolutePath() + "/" +
+                        chooser.getSelectedFile().getName();
+                    _directory_txt.setText(_outdir);
+                    _curdir = new File(_outdir);
                     //_stdio.getStdout().println("~~~~~~ _directory_txt=" + _directory_txt.getText());
                 }
 
@@ -120,7 +135,7 @@ public class BodySaveDialog extends JDialog implements ActionListener {
         _save_resp = new JCheckBox("Save response bodies", true);
         messagePane.add(_save_req);
         messagePane.add(_save_resp);
-        JButton button = new JButton("OK");
+        JButton button = new JButton("Save");
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
         messagePane.add(button);
         button.addActionListener(this);
