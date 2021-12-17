@@ -40,7 +40,7 @@ Examples:
 
 ## Build from source code
 
-The first step would be to download the source code from <a href="http://www.evilwan.be/files/naked-body-1.0.tar.gz">here</a> and extract the
+The first step would be to download the source code from [here](https://github.com/evilwan/naked-body) and extract the
 archive in a convenient place.
 
 If you have Maven installed, then go to the top level directory of the extracted archive and type:
