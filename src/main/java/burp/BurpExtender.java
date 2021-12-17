@@ -273,7 +273,7 @@ public class BurpExtender implements IBurpExtender, IContextMenuFactory, BodySav
         //
         // Plan A: try analysis of actual body bytes
         //
-        if((body.length > 4) &&
+        if((body.length > ofs + 4) &&
            (body[ofs] == 0x00) &&
            (body[ofs + 1] == (byte) 'a') &&
            (body[ofs + 2] == (byte) 's') &&
