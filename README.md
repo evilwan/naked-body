@@ -1,4 +1,10 @@
 # How to use Burpsuite extension "Naked Body"
+
+## Notice
+
+Moved to [Codeberg](https://codeberg.org/evilwan/naked-body) because of policy changes at Github (see
+[Github notice](https://github.blog/2023-03-09-raising-the-bar-for-software-security-github-2fa-begins-march-13) )
+
 ## Installation
 In Burp go to the "Extender" tab, then select the "Extensions" sub-tab and click "Add"
 
